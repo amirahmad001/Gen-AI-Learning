@@ -3,6 +3,7 @@ from pathlib import Path
 from langchain_community.document_loaders import TextLoader,PyPDFLoader
 from langchain_text_splitters import CharacterTextSplitter,RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.vectorstores import InMemoryVectorStore
 
 #define path
 file_path1 = Path('../knowledge_source/intro.txt')
@@ -59,4 +60,16 @@ print(len(chunked_text))
 vectors = embedding_model.embed_documents(texts = chunked_text)
 print(len(vectors))
 print(type(vectors))
-print(vectors[0])
+#print(vectors[0])
+
+#Vector stores
+vector_store = InMemoryVectorStore(embedding=embedding_model)
+
+vector_store.add_documents(documents= splitted_doc)
+
+similarity_search = vector_store.similarity_search(query = "What is my age",k=1)
+print("similarity======================")
+print(type(similarity_search))
+print(len(similarity_search))
+for similar in similarity_search:
+    print(similar.page_content)
