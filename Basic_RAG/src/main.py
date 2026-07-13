@@ -71,5 +71,23 @@ similarity_search = vector_store.similarity_search(query = "What is my age",k=1)
 print("similarity======================")
 print(type(similarity_search))
 print(len(similarity_search))
-for similar in similarity_search:
-    print(similar.page_content)
+# for similar in similarity_search:
+#     print(similar.page_content)
+
+
+# #Retriever
+# retriever = vector_store.as_retriever(
+#     search_type = 'similarity',
+#     search_kwrgs = {'k':3}
+# )
+
+retriever = vector_store.as_retriever(
+    search_type = 'mmr',
+    search_kwrgs = {'k':3,'fetch_k':10, 'lambda_mult':0.5}
+)
+
+res = retriever.invoke("What is my age")
+
+print(type(res[0]))
+print(len(res))
+print(res)
