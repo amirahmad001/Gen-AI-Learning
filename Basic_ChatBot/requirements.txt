@@ -1,0 +1,9 @@
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
+langchain-huggingface
+huggingface-hub
+sentence-transformers
+pypdf
+python-dotenv
