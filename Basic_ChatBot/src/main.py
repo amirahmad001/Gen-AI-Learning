@@ -9,6 +9,7 @@ from langchain_huggingface import (
     ChatHuggingFace
 )
 from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_chroma import Chroma
 
 
 load_dotenv()
@@ -59,8 +60,20 @@ embedding_model = HuggingFaceEmbeddings(
 # Vector Store
 # ==========================
 
-vector_store = InMemoryVectorStore(
-    embedding=embedding_model
+
+#Inmemory Vector Store
+# ===========================
+# vector_store = InMemoryVectorStore(
+#     embedding=embedding_model
+# )
+# ===========================
+
+#Chroma Vector store
+
+vector_store = Chroma(
+    collection_name='my_vector_store',
+    persist_directory = './chroma_db',
+    embedding_function = embedding_model
 )
 
 vector_store.add_documents(chunks)
