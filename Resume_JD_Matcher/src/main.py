@@ -44,12 +44,12 @@ chunks = splitter.split_documents(documents=cleaned_doc)
 jd_chunks = splitter.split_documents(documents=jd_documents)
 
 
-# ==================
-# Embedding
-# ==================
-embedding_model = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2"
-)
+# # ==================
+# # Embedding
+# # ==================
+# embedding_model = HuggingFaceEmbeddings(
+#     model_name="sentence-transformers/all-mpnet-base-v2"
+# )
 
 
 # ==================
@@ -74,12 +74,20 @@ vector_store.add_documents(
     ids=ids
 )
 
+jd_ids = []
+for chunk in jd_chunks:
+    doc_hash = hashlib.sha256(chunk.page_content.encode()).hexdigest()
+    jd_ids.append(doc_hash)
+
 jd_vector_store = Chroma(
     collection_name='jd_collection',
     persist_directory='./vector_store'
 )
 
-jd_vector_store.add_documents(jd_chunks)
+jd_vector_store.add_documents(
+    documents = jd_chunks,
+    ids = jd_ids
+    )
 
 
 # ==================
