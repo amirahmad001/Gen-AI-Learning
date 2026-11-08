@@ -4,6 +4,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langchain_core.messages import BaseMessage,HumanMessage,AIMessage
 from langchain_ollama import ChatOllama
 from typing import TypedDict,Annotated
+from langgraph.config import get_stream_writer
 
 
 class ChatState(TypedDict):
@@ -49,5 +50,14 @@ if __name__ == "__main__":
         curr_state = {
             'message':HumanMessage(content=user_input)
         }
-        res1 = chatbot.invoke(curr_state,config=config)
-        print('AI: ',res1['message'][-1].content)
+        # res1 = chatbot.invoke(curr_state,config=config)
+        # print('AI: ',res1['message'][-1].content)
+        for chunk,metadata in chatbot.stream(
+            curr_state,
+            stream_mode="messages",
+            config=config
+        ):
+            if chunk.content:
+                print(chunk.content,end = '',flush=True)
+        print()
+
