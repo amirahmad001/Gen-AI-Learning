@@ -1,5 +1,5 @@
+from model.FileModel import FileModel
 from pathlib import Path
-from model import FileModel
 from dotenv import load_dotenv
 import os
 load_dotenv()
